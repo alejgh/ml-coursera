@@ -63,24 +63,31 @@ Theta2_grad = zeros(size(Theta2));
 %
 
 
+a1 = [ones(m, 1) X]';
+z2 = Theta1 * a1;
+a2 = [ones(1, m); sigmoid(z2)];
+z3 = Theta2 * a2;
+a3 = sigmoid(z3);
 
+% each row of the output layer (a3) corresponds to a class
+k = size(a3, 1);
+Y = eye(k);
 
+for i = 1:m
+    J = J + sum((-Y(:, y(i)) .* log((a3(:, i))) - (1 - Y(:, y(i))) ...
+        .* log(1 - a3(:, i)))); 
+end
+J = J / m;
 
-
-
-
-
-
-
-
-
-
-
-
-
+% adding regularization. we assume that the
+% neural network will only have 3 layers
+J = J + lambda/(2*m) * (sum(sum(Theta1(:,2:end) .^ 2)) + ...
+    sum(sum(Theta2(:, 2:end) .^ 2)));
 
 
 % -------------------------------------------------------------
+% Backpropagation
+
 
 % =========================================================================
 
