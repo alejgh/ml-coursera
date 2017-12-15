@@ -87,6 +87,18 @@ J = J + lambda/(2*m) * (sum(sum(Theta1(:,2:end) .^ 2)) + ...
 
 % -------------------------------------------------------------
 % Backpropagation
+for i = 1:m
+   delta3 = a3(:,i) - Y(:, y(i));
+   delta2 = Theta2' * delta3 .* [1 ; sigmoidGradient(z2(:, i))];
+   delta2 = delta2(2:end);
+   Theta1_grad = Theta1_grad + delta2*(a1(:, i)');
+   Theta2_grad = Theta2_grad + delta3*(a2(:, i)');
+end
+
+Theta1_grad = Theta1_grad / m;
+Theta1_grad(:, 2:end) = Theta1_grad(:, 2:end) + lambda*Theta1(:, 2:end)/m;
+Theta2_grad = Theta2_grad / m;
+Theta2_grad(:, 2:end) = Theta2_grad(:, 2:end) + lambda*Theta2(:, 2:end)/m;
 
 
 % =========================================================================
