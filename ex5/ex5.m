@@ -218,3 +218,12 @@ end
 
 fprintf('Program paused. Press enter to continue.\n');
 pause;
+
+
+%% =========== Optional 1: Computing test set error =============
+
+lambda = 3;
+theta = trainLinearReg(X_poly, y, lambda);
+[test_error, ~] = linearRegCostFunction(X_poly_test, ytest, theta, 0);
+fprintf('With lambda = %f, the generalization error is: %f\n', ...
+    lambda, test_error);
