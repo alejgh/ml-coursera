@@ -26,12 +26,11 @@ centroids = zeros(K, n);
 % Note: You can use a for-loop over the centroids to compute this.
 %
 
-
-
-
-
-
-
+for i = 1:K
+    % vectorized implementation, because I feel like it today :)
+    logical_array = idx == i;
+    centroids(i, :) = sum(X(logical_array, :), 1) / sum(logical_array);
+end
 
 % =============================================================
 
