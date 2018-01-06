@@ -40,20 +40,26 @@ Theta_grad = zeros(size(Theta));
 %                     partial derivatives w.r.t. to each element of Theta
 %
 
+M = X*Theta';
+MAGIC = R .* M - R .* Y;
 
+J = sum(sum(MAGIC.^2)) / 2;
+J = J + (lambda/2) * sum(sum(Theta.^2));    % regularization I
+J = J + (lambda/2) * sum(sum(X.^2));        % regularization II
 
+nm = size(X, 1);
+for i = 1:nm
+    idx_j = R(i,:) == 1;
+    X_grad(i, :) = MAGIC(i, idx_j) * Theta(idx_j,:);
+    X_grad(i, :) = X_grad(i, :) + lambda * X(i, :); % regularization
+end
 
-
-
-
-
-
-
-
-
-
-
-
+nu = size(Theta, 1);
+for j = 1:nu
+   idx_i = R(:, j) == 1;
+   Theta_grad(j, :) = MAGIC(idx_i, j)' * X(idx_i, :);
+   Theta_grad(j, :) = Theta_grad(j, :) + lambda * Theta(j, :);
+end
 
 % =============================================================
 
